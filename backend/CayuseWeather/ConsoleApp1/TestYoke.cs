@@ -32,8 +32,8 @@ namespace TestYoke
         {
             long unixTimestamp = new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds();
             var weatherInfo =  GetWeatherAndLocationFromZip("us", "97702", "ef9770f9c77287c7722b0dea66ed51b9");
-            weatherInfo.timezone = GetTimeZoneFromLocation(weatherInfo.latitude, weatherInfo.longitude, "AIzaSyAnmnqknkOF7Ry-UzB8auoimBpwWv-9sEc", unixTimestamp.ToString());
-            weatherInfo.elevationFeet = GetElevationFromLocation(weatherInfo.latitude, weatherInfo.longitude, "AIzaSyAnmnqknkOF7Ry-UzB8auoimBpwWv-9sEc");
+            weatherInfo.Timezone = GetTimeZoneFromLocation(weatherInfo.Latitude, weatherInfo.Longitude, "AIzaSyAnmnqknkOF7Ry-UzB8auoimBpwWv-9sEc", unixTimestamp.ToString());
+            weatherInfo.ElevationFeet = GetElevationFromLocation(weatherInfo.Latitude, weatherInfo.Longitude, "AIzaSyAnmnqknkOF7Ry-UzB8auoimBpwWv-9sEc");
            
             Console.WriteLine("Hello World!");
 
@@ -66,7 +66,6 @@ namespace TestYoke
         }
         static WeatherInfo GetWeatherAndLocationFromZip(string countryCode, string zip, string apiKey)
         {
-            /*"{\"coord\":{\"lon\":-122.56,\"lat\":45.55},\"weather\":[{\"id\":500,\"main\":\"Rain\",\"description\":\"light rain\",\"icon\":\"10n\"}],\"base\":\"stations\",\"main\":{\"temp\":279.56,\"pressure\":1009,\"humidity\":82,\"temp_min\":278.75,\"temp_max\":280.35},\"visibility\":11265,\"wind\":{\"speed\":5.1,\"deg\":180},\"rain\":{\"1h\":0.85},\"clouds\":{\"all\":90},\"dt\":1543626480,\"sys\":{\"type\":1,\"id\":6070,\"message\":0.004,\"country\":\"US\",\"sunrise\":1543678219,\"sunset\":1543710492},\"id\":420029249,\"name\":\"Portland\",\"cod\":200}"*/
 
             var url = $@"http://api.openweathermap.org/data/2.5/weather?zip={zip},{countryCode}&appid={apiKey}";
             var client = new WebClient();
@@ -74,16 +73,15 @@ namespace TestYoke
 
             JObject responseJo = JObject.Parse(response);
 
-            //construct on instantiation
-
-            var weatherInfo = new WeatherInfo();
-
-            weatherInfo.latitude = (string)responseJo["coord"]["lat"];
-            weatherInfo.longitude = (string)responseJo["coord"]["lon"];
-            weatherInfo.temperatureKelvin = (int)responseJo["main"]["temp"];
-            weatherInfo.temperatureFahrenheit = ((1.8 * (weatherInfo.temperatureKelvin - 273))+32).ToString();
-            weatherInfo.temperatureCelsius = (weatherInfo.temperatureKelvin - 273).ToString();
-            weatherInfo.cityName = (string)responseJo["name"];
+            var weatherInfo = new WeatherInfo
+            {
+                Latitude = (string)responseJo["coord"]["lat"] ?? "NA",
+                Longitude = (string)responseJo["coord"]["lon"] ?? "NA",
+                TemperatureKelvin = (int)responseJo["main"]["temp"],
+                TemperatureCelsius = ((int)responseJo["main"]["temp"] - 273).ToString() ?? "NA",
+                TemperatureFahrenheit = ((1.8 * ((int)responseJo["main"]["temp"] - 273)) + 32).ToString() ?? "NA",
+                CityName = (string)responseJo["name"] ?? "NA"
+            };
 
             return weatherInfo;
 
@@ -92,15 +90,14 @@ namespace TestYoke
     }
     public class WeatherInfo
     {
-        // $CITY_NAME, the temperature is $TEMPERATURE, the timezone is $TIMEZONE, and the elevation is $ELEVATION”
-        public string cityName { get; set; }
-        public int temperatureKelvin { get; set; }
-        public string temperatureFahrenheit { get; set; }
-        public string temperatureCelsius { get; set; }
-        public string timezone { get; set; }
-        public string elevationFeet { get; set; }
-        public string latitude { get; set; }
-        public string longitude { get; set; }
+        public string CityName { get; set; }
+        public int TemperatureKelvin { get; set; }
+        public string TemperatureFahrenheit { get; set; }
+        public string TemperatureCelsius { get; set; }
+        public string Timezone { get; set; }
+        public string ElevationFeet { get; set; }
+        public string Latitude { get; set; }
+        public string Longitude { get; set; }
 
     }
     
