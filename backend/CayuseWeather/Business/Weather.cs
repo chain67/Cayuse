@@ -1,8 +1,21 @@
-﻿using System;
+﻿using Data;
 
-namespace Business
+namespace BusinessLogic
 {
-    public class Weather
+    public class Weather : IWeather
     {
+        public WeatherInfo GetWeatherInfoFromZipCode(string zipCode)
+        {
+            var dl = new DataLayer();
+            var weatherInfo = dl.GetWeatherInfoFromZipCode(zipCode);
+            return weatherInfo;
+
+        }
+    }
+
+    public interface IWeather
+    {
+        WeatherInfo GetWeatherInfoFromZipCode(string zipCode);
+
     }
 }

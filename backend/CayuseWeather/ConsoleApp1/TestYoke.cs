@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using Newtonsoft.Json;
-using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
 namespace TestYoke
@@ -31,9 +27,11 @@ namespace TestYoke
         static void Main()
         {
             long unixTimestamp = new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds();
-            var weatherInfo =  GetWeatherAndLocationFromZip("us", "97702", "ef9770f9c77287c7722b0dea66ed51b9");
+            var weatherInfo =  GetWeatherAndLocationFromZip("us", "97213", "ef9770f9c77287c7722b0dea66ed51b9");
             weatherInfo.Timezone = GetTimeZoneFromLocation(weatherInfo.Latitude, weatherInfo.Longitude, "AIzaSyAnmnqknkOF7Ry-UzB8auoimBpwWv-9sEc", unixTimestamp.ToString());
-            weatherInfo.ElevationFeet = GetElevationFromLocation(weatherInfo.Latitude, weatherInfo.Longitude, "AIzaSyAnmnqknkOF7Ry-UzB8auoimBpwWv-9sEc");
+            weatherInfo.ElevationMeters = GetElevationFromLocation(weatherInfo.Latitude, weatherInfo.Longitude, "AIzaSyAnmnqknkOF7Ry-UzB8auoimBpwWv-9sEc");
+            var elevationFeet = weatherInfo.ElevationMeters * 3.28;
+            
            
             Console.WriteLine("Hello World!");
 
@@ -53,15 +51,14 @@ namespace TestYoke
 
         }
 
-        static string GetElevationFromLocation(string latitude, string longitude, string apiKey)
+        static int GetElevationFromLocation(string latitude, string longitude, string apiKey)
         {
             var url = $@"https://maps.googleapis.com/maps/api/elevation/json?locations={latitude},{longitude}&key={apiKey}";
             var client = new WebClient();
             var response = client.DownloadString(url);
             JObject responseJo = JObject.Parse(response);
-            var elevationMeters = (Int32)responseJo["results"][0]["elevation"];
-            var elevationFeet = elevationMeters * 3.28084;
-            return elevationFeet.ToString();
+            var elevationMeters = (Int32)responseJo["results"][0]["elevation"]; 
+            return elevationMeters;
 
         }
         static WeatherInfo GetWeatherAndLocationFromZip(string countryCode, string zip, string apiKey)
@@ -77,9 +74,8 @@ namespace TestYoke
             {
                 Latitude = (string)responseJo["coord"]["lat"] ?? "NA",
                 Longitude = (string)responseJo["coord"]["lon"] ?? "NA",
-                TemperatureKelvin = (int)responseJo["main"]["temp"],
                 TemperatureCelsius = ((int)responseJo["main"]["temp"] - 273).ToString() ?? "NA",
-                TemperatureFahrenheit = ((1.8 * ((int)responseJo["main"]["temp"] - 273)) + 32).ToString() ?? "NA",
+                TemperatureFahrenheit = ((1.8 * ((int)responseJo["main"]["temp"] - 273)) + 32).ToString() ?? "NA",               
                 CityName = (string)responseJo["name"] ?? "NA"
             };
 
@@ -91,11 +87,11 @@ namespace TestYoke
     public class WeatherInfo
     {
         public string CityName { get; set; }
-        public int TemperatureKelvin { get; set; }
         public string TemperatureFahrenheit { get; set; }
         public string TemperatureCelsius { get; set; }
         public string Timezone { get; set; }
-        public string ElevationFeet { get; set; }
+        public int ElevationFeet { get; set; }
+        public int ElevationMeters { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
 
