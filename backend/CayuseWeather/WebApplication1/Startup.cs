@@ -9,8 +9,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using BusinessLogic;
+using Data;
 
-namespace WebApplication1
+namespace WebServices
 {
     public class Startup
     {
@@ -25,6 +27,11 @@ namespace WebApplication1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddScoped<IWeather, Weather>();
+            services.AddScoped<IDataLayer, DataLayer>();
+            services.AddScoped<IExternalServices, ExternalServices>();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

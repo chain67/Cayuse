@@ -12,12 +12,17 @@ namespace  WebServices.Controllers
     [ApiController]
     public class WeatherController : ControllerBase
     {
+        IWeather _weather;
+        public WeatherController(IWeather weather)
+        {
+            _weather = weather;
+        }
         // GET api/weather/?zipCode=97213
         [HttpGet]
         public ActionResult<WeatherInfoDto> Get(string zipCode)
         {
-            var weather = new Weather();
-            var weatherInfo = weather.GetWeatherInfoFromZipCode(zipCode);
+            
+            var weatherInfo = _weather.GetWeatherInfoFromZipCode(zipCode);
             var weatherInfoDto = new WeatherInfoDto
             {
                 CityName = weatherInfo.CityName,

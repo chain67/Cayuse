@@ -3,13 +3,17 @@
 namespace BusinessLogic
 {
     public class Weather : IWeather
+
     {
+        IDataLayer _dataLayer;
+        public Weather(IDataLayer dataLayer)
+        {
+            _dataLayer = dataLayer;
+        }
         public WeatherInfo GetWeatherInfoFromZipCode(string zipCode)
         {
-            var dl = new DataLayer();
-            var weatherInfo = dl.GetWeatherInfoFromZipCode(zipCode);
-            return weatherInfo;
-
+          
+            return _dataLayer.GetWeatherInfoFromZipCode(zipCode);
         }
     }
 

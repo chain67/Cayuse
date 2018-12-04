@@ -2,13 +2,25 @@
 
 namespace Data
 {
-    public class DataLayer
+    public class DataLayer : IDataLayer
     {
+        IExternalServices _externalServices;
+
+        public DataLayer(IExternalServices externalServices)
+        {
+            _externalServices = externalServices;
+           
+        }
         public WeatherInfo GetWeatherInfoFromZipCode(string zip)
         {
-            var es = new ExternalServices();
-            return es.GetWeatherInfoFromZipCode(zip);
+            
+            return _externalServices.GetWeatherInfoFromZipCode(zip);
         }
 
+    }
+
+    public interface IDataLayer
+    {
+        WeatherInfo GetWeatherInfoFromZipCode(string zip);
     }
 }
