@@ -1,0 +1,7 @@
+The backend project should run fine from visual studio and meet the basic requirements. 
+
+I will be working on the things to do.
+as of 10:30 12/4
+to do: 
+unit tests and int tests
+stretch goal(angularjs spa)
