@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using BusinessLogic;
 using Data;
+using Utils;
 
 namespace WebServices
 {
@@ -27,9 +28,11 @@ namespace WebServices
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSingleton<log4net.Core.ILogger, Logger>();
             services.AddScoped<IWeather, Weather>();
             services.AddScoped<IDataLayer, DataLayer>();
             services.AddScoped<IExternalServices, ExternalServices>();
+           
 
 
         }

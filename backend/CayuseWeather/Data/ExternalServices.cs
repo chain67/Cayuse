@@ -1,23 +1,29 @@
 ﻿using System;
 using System.Net;
 using Newtonsoft.Json.Linq;
+using log4net;
+using System.Configuration;
+using System.Text.RegularExpressions;
 
 namespace Data
 {
+
     public class ExternalServices : IExternalServices
     {
-
-        public WeatherInfo GetWeatherInfoFromZipCode(string zipCode) 
+        public WeatherInfo GetWeatherInfoFromZipCode(string zipCode)
         {
+
+            var googleKey = ConfigurationManager.AppSettings["googleKey"];
+            var openWeatherKey = ConfigurationManager.AppSettings["openWeatherKey"];
             long unixTimestamp = new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds();
-            var weatherInfo = GetWeatherAndLocationFromZip("us", zipCode, "ef9770f9c77287c7722b0dea66ed51b9");
-            weatherInfo.Timezone = GetTimeZoneFromLocation(weatherInfo.Latitude, weatherInfo.Longitude, "AIzaSyAnmnqknkOF7Ry-UzB8auoimBpwWv-9sEc", unixTimestamp.ToString());
-            weatherInfo.ElevationMeters = GetElevationFromLocation(weatherInfo.Latitude, weatherInfo.Longitude, "AIzaSyAnmnqknkOF7Ry-UzB8auoimBpwWv-9sEc");           
+
+            var weatherInfo = GetWeatherAndLocationFromZip("us", zipCode, openWeatherKey);
+            weatherInfo.Timezone = GetTimeZoneFromLocation(weatherInfo.Latitude, weatherInfo.Longitude, googleKey, unixTimestamp.ToString());
+            weatherInfo.ElevationMeters = GetElevationFromLocation(weatherInfo.Latitude, weatherInfo.Longitude, googleKey);
+
             weatherInfo.ElevationFeet = Convert.ToInt32(weatherInfo.ElevationMeters * 3.28);
 
-
             return weatherInfo;
-
         }
 
 
@@ -29,10 +35,9 @@ namespace Data
             JObject responseJo = JObject.Parse(response);
 
             return (string)responseJo["timeZoneName"];
-
         }
 
-       private int GetElevationFromLocation(string latitude, string longitude, string apiKey)
+        private int GetElevationFromLocation(string latitude, string longitude, string apiKey)
         {
             var url = $@"https://maps.googleapis.com/maps/api/elevation/json?locations={latitude},{longitude}&key={apiKey}";
             var client = new WebClient();
@@ -55,8 +60,8 @@ namespace Data
             {
                 Latitude = (string)responseJo["coord"]["lat"] ?? "NA",
                 Longitude = (string)responseJo["coord"]["lon"] ?? "NA",
-                TemperatureCelsius = ((int)responseJo["main"]["temp"] - 273).ToString() ?? "NA",
-                TemperatureFahrenheit = ((1.8 * ((int)responseJo["main"]["temp"] - 273)) + 32).ToString() ?? "NA",
+                TemperatureCelsius = ((int)responseJo["main"]["temp"] - 273).ToString() + "°C" ?? "NA",
+                TemperatureFahrenheit = ((1.8 * ((int)responseJo["main"]["temp"] - 273)) + 32).ToString() + "°F" ?? "NA",
                 CityName = (string)responseJo["name"] ?? "NA"
             };
 

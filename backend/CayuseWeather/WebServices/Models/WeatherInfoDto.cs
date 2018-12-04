@@ -11,8 +11,8 @@ namespace WebServices.Models
         public string TemperatureFahrenheit { get; set; }
         public string TemperatureCelsius { get; set; }
         public string Timezone { get; set; }
-        public int ElevationFeet { get; set; }
-        public int ElevationMeters { get; set; }
+        public string ElevationFeet { get; set; }
+        public string ElevationMeters { get; set; }
         
     }
    
