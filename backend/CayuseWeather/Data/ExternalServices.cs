@@ -7,14 +7,26 @@ using System.Text.RegularExpressions;
 
 namespace Data
 {
-
+    
     public class ExternalServices : IExternalServices
     {
+        IWebClientFactory _webClientFactory;
+
+        public ExternalServices(IWebClientFactory webClientFactory)
+        {
+            _webClientFactory = webClientFactory;
+
+        }
         public WeatherInfo GetWeatherInfoFromZipCode(string zipCode)
         {
 
-            var googleKey = ConfigurationManager.AppSettings["googleKey"];
-            var openWeatherKey = ConfigurationManager.AppSettings["openWeatherKey"];
+            //var googleKey = ConfigurationManager.AppSettings["googleKey"];
+            //var openWeatherKey = ConfigurationManager.AppSettings["openWeatherKey"];
+
+            var googleKey = "AIzaSyAnmnqknkOF7Ry-UzB8auoimBpwWv-9sEc";
+            var openWeatherKey = "ef9770f9c77287c7722b0dea66ed51b9";
+
+
             long unixTimestamp = new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds();
 
             var weatherInfo = GetWeatherAndLocationFromZip("us", zipCode, openWeatherKey);
@@ -30,7 +42,7 @@ namespace Data
         private string GetTimeZoneFromLocation(string latitude, string longitude, string apiKey, string timeStamp)
         {
             var url = $@"https://maps.googleapis.com/maps/api/timezone/json?location={latitude},{longitude}&timestamp={timeStamp}&key={apiKey}";
-            var client = new WebClient();
+            var client = _webClientFactory.Create();
             var response = client.DownloadString(url);
             JObject responseJo = JObject.Parse(response);
 
@@ -40,7 +52,7 @@ namespace Data
         private int GetElevationFromLocation(string latitude, string longitude, string apiKey)
         {
             var url = $@"https://maps.googleapis.com/maps/api/elevation/json?locations={latitude},{longitude}&key={apiKey}";
-            var client = new WebClient();
+            var client = _webClientFactory.Create();
             var response = client.DownloadString(url);
             JObject responseJo = JObject.Parse(response);
             var elevationMeters = (Int32)responseJo["results"][0]["elevation"];
@@ -51,7 +63,7 @@ namespace Data
         {
 
             var url = $@"http://api.openweathermap.org/data/2.5/weather?zip={zip},{countryCode}&appid={apiKey}";
-            var client = new WebClient();
+            var client = _webClientFactory.Create();
             var response = client.DownloadString(url);
 
             JObject responseJo = JObject.Parse(response);

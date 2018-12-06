@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BusinessLogic;
 using WebServices.Models;
+using Microsoft.AspNetCore.Cors;
 
 namespace  WebServices.Controllers
 {
     [Route("api/[controller]")]
+    [EnableCors("MyPolicy")]
     [ApiController]
     public class WeatherController : ControllerBase
     {

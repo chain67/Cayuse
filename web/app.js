@@ -1,14 +1,35 @@
-// MODULE
-var weatherApp = angular.module('weatherApp', []);
+var app = angular.module('myApp', ['ngRoute']);
+
+app.config(function($routeProvider) {
+  $routeProvider
+
+  .when('/', {
+    templateUrl : 'pages/home.html',
+    controller  : 'HomeController'
+  })
+
+    .when('/weather', {
+    templateUrl : 'pages/weather.html',
+    controller  : 'WeatherController'
+  })
+
+  .otherwise({redirectTo: '/'});
+});
+
+app.controller('HomeController', function($scope) {
+  $scope.message = 'Hello from HomeController';
+});
 
 
-// CONTROLLERS
-weatherApp.controller('mainController', ['$scope','$filter',function ($scope, $filter) {
-    
-    $scope.zipCode = '';
-    $scope.characters = 5;
-    
-    
-}]);
 
-
+app.controller('WeatherController', function($scope, $http) {
+        
+        $scope.weather = $http({
+        url: 'http://localhost:50507/api/weather/', 
+        method: "GET",
+        params: {zipCode: $scope.zipCode}
+                }).then(function(response){$scope.weather = response.data;});
+         
+        
+ 
+   });

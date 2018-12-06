@@ -1,50 +1,15 @@
-<!DOCTYPE html>
-<html lang="en-us" ng-app="coryApp">
-    <head>
-        <title>Cayuse Weather App</title>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-        <meta charset="UTF-8">
+<!doctype html>
+<html ng-app="myApp">
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular-route.min.js"></script>
+  </head>
+  <body>
+    <a href="#/">Home</a>
+    <a href="#/weather">Weather</a>
 
-        <!-- load bootstrap and fontawesome via CDN -->
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
-        <style>
-            html, body
-            {
-                font-size: 1.1em;
-            }
-        </style>
-        
-        <!-- load angular via CDN -->
-        <script src="//code.angularjs.org/1.7.5/angular.min.js"></script>
-        <script src="app.js"></script>
-    </head>
-    <body>
+    <div ng-view></div>
 
-        <header>
-			<nav class="navbar navbar-default">
-			<div class="container">
-				<div class="navbar-header">
-					<a class="navbar-brand" href="/">AngularJS</a>
-				</div>
-
-				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#"><i class="fa fa-home"></i> Home</a></li>
-				</ul>
-			</div>
-			</nav>
-		</header>
-
-        <div class="container">
-
-			<div ng-controller="mainController">
-                  Enter Zip Code: <input type="text" name="zipCode" ng-model=zipCode><br>
-                           
-                
-                <div class = "alert" ng-class="{'alert-warning': zipcode.length < characters }" ng-show="zipCode.length !== characters"> invalid zip code!</div>
-                
-            </div>
-
-		</div>
-
-    </body>
+    <script src="app.js"></script>
+  </body>
 </html>

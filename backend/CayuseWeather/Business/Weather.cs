@@ -17,7 +17,7 @@ namespace BusinessLogic
             //Do not hit remote api if the zipcode does not at least match the regex.
             var regex = @"^\d{5}$";
             var match = Regex.Match(zipCode ?? "", regex, RegexOptions.IgnoreCase);
-            var response = @"please enter a valid 5 digit zip code after the url in this format: ?zipCode=97213";
+            var response = "Please enter a valid 5 digit zip code";
 
             if (match.Success)
             {
