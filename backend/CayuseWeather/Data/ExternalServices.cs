@@ -17,29 +17,10 @@ namespace Data
             _webClientFactory = webClientFactory;
 
         }
-        public WeatherInfo GetWeatherInfoFromZipCode(string zipCode)
-        {
-
-            //var googleKey = ConfigurationManager.AppSettings["googleKey"];
-            //var openWeatherKey = ConfigurationManager.AppSettings["openWeatherKey"];
-
-            var googleKey = "AIzaSyAnmnqknkOF7Ry-UzB8auoimBpwWv-9sEc";
-            var openWeatherKey = "ef9770f9c77287c7722b0dea66ed51b9";
+       
 
 
-            long unixTimestamp = new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds();
-
-            var weatherInfo = GetWeatherAndLocationFromZip("us", zipCode, openWeatherKey);
-            weatherInfo.Timezone = GetTimeZoneFromLocation(weatherInfo.Latitude, weatherInfo.Longitude, googleKey, unixTimestamp.ToString());
-            weatherInfo.ElevationMeters = GetElevationFromLocation(weatherInfo.Latitude, weatherInfo.Longitude, googleKey);
-
-            weatherInfo.ElevationFeet = Convert.ToInt32(weatherInfo.ElevationMeters * 3.28);
-
-            return weatherInfo;
-        }
-
-
-        private string GetTimeZoneFromLocation(string latitude, string longitude, string apiKey, string timeStamp)
+        public string GetTimeZoneFromLocation(string latitude, string longitude, string apiKey, string timeStamp)
         {
             var url = $@"https://maps.googleapis.com/maps/api/timezone/json?location={latitude},{longitude}&timestamp={timeStamp}&key={apiKey}";
             var client = _webClientFactory.Create();
@@ -49,7 +30,7 @@ namespace Data
             return (string)responseJo["timeZoneName"];
         }
 
-        private int GetElevationFromLocation(string latitude, string longitude, string apiKey)
+       public int GetElevationFromLocation(string latitude, string longitude, string apiKey)
         {
             var url = $@"https://maps.googleapis.com/maps/api/elevation/json?locations={latitude},{longitude}&key={apiKey}";
             var client = _webClientFactory.Create();
@@ -59,7 +40,7 @@ namespace Data
             return elevationMeters;
 
         }
-        private WeatherInfo GetWeatherAndLocationFromZip(string countryCode, string zip, string apiKey)
+        public WeatherInfo GetWeatherAndLocationFromZip(string countryCode, string zip, string apiKey)
         {
 
             var url = $@"http://api.openweathermap.org/data/2.5/weather?zip={zip},{countryCode}&appid={apiKey}";
@@ -84,7 +65,10 @@ namespace Data
 
     public interface IExternalServices
     {
-        WeatherInfo GetWeatherInfoFromZipCode(string zipCode);
+       
+        string GetTimeZoneFromLocation(string latitude, string longitude, string apiKey, string timeStamp);
+        int GetElevationFromLocation(string latitude, string longitude, string apiKey);
+        WeatherInfo GetWeatherAndLocationFromZip(string countryCode, string zip, string apiKey);
 
     }
 }

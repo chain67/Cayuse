@@ -1,7 +1,7 @@
 The backend project should run fine from visual studio and meet the basic requirements. 
 
 I will be working on the things to do.
-as of 10:30 12/4
+as of 10:30 12/7
 to do: 
-unit tests and int tests
-stretch goal(angularjs spa)
+int tests with external webservice spinup
+stretch goal(angularjs spa) beyond quick mockup to test connection

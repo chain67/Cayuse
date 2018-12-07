@@ -4,6 +4,7 @@ using BusinessLogic;
 using System.Net;
 using Moq;
 using Data;
+using Newtonsoft.Json.Linq;
 
 namespace Tests
 {
@@ -36,6 +37,20 @@ namespace Tests
 
             Assert.AreEqual(result, Helpers.GetExpectedGoodWeatherResultString());
         }
+        [Test]
+        public void WeatherGetWeatherInfoFromZipCode_ReturnCorrectString_WhenInValidZipCode()
+        {
+            var mockData = new Mock<IDataLayer>();
+            mockData = new Mock<IDataLayer>(MockBehavior.Strict);
+            mockData.Setup(d => d.GetWeatherInfoFromZipCode("foo")).Returns(Helpers.GetGoodWeatherInfo);
+
+            var _sut = new Weather(mockData.Object);
+
+            var result = _sut.GetWeatherInfoFromZipCode("foo");
+
+            Assert.AreEqual(result, Helpers.GetExpectedBadWeatherResultString());
+        }
+
 
 
         [Test]
@@ -54,27 +69,37 @@ namespace Tests
         #region data
 
         [Test]
-        public void ExternalServicesGetWeatherInfoFromZipCode_ReturnsWeatherInfo_WhenValidZipCode()
+        public void DataLayerGetsWeatherInfoFromZipCode_ReturnsWeatherInfo_WhenValidZipCode()
         {
-            var mockWebClient = new Mock<IWebClient>();
-            mockWebClient = new Mock<IWebClient>(MockBehavior.Strict);
-            mockWebClient.Setup(w => w.DownloadString(Helpers.GetGoodElevationWebClientString())).Returns(Helpers.GetGoogleElevationResponse);
-            mockWebClient.Setup(w => w.DownloadString(Helpers.GetGoodTimeZoneWebClientString())).Returns(Helpers.GetGoogleTimezoneResponse);
-            mockWebClient.Setup(w => w.DownloadString(Helpers.GetOpenWeatherResponse())).Returns(Helpers.GetOpenWeatherResponse);
 
-            var mockWebClientFactory = new Mock<IWebClientFactory>();
-            mockWebClientFactory.Setup(wcf => wcf.Create()).Returns(mockWebClient.Object);
+            var mockExternalServices = new Mock<IExternalServices>();
+            mockExternalServices.Setup(es => es.GetElevationFromLocation(It.IsAny<string>(), It.IsAny<string>()
+                , It.IsAny<string>())).Returns(57);
 
-            var _sut = new ExternalServices(mockWebClientFactory.Object);
+            mockExternalServices.Setup(es => es.GetTimeZoneFromLocation(It.IsAny<string>(), It.IsAny<string>()
+                , It.IsAny<string>(), It.IsAny<string>())).Returns("Pacific Standard Time");
 
+            mockExternalServices.Setup(es => es.GetWeatherAndLocationFromZip(It.IsAny<string>(), It.IsAny<string>()
+               , It.IsAny<string>())).Returns(new WeatherInfo {
+
+                   CityName = "Portland",                  
+                   Latitude = "45.55",
+                   Longitude = "-122.56",
+                   ElevationMeters = 57,
+                   TemperatureCelsius = "21",
+                   TemperatureFahrenheit = "70",
+                   
+               });
+
+            var _sut = new DataLayer(mockExternalServices.Object);
             var result = _sut.GetWeatherInfoFromZipCode("97213");
-        }
-        [Test]
-        public void ExternalServicesGetWeatherInfoFromZipCode_ReturnsReturnsWeatherInfo_WhenInvalidZipCode()
-        {
+
+            Assert.AreEqual(Helpers.GetGoodWeatherInfo().ElevationFeet, result.ElevationFeet);
+            Assert.AreEqual(Helpers.GetGoodWeatherInfo().TemperatureFahrenheit, result.TemperatureFahrenheit);
+
 
         }
-
+       
         #endregion
     }
 }

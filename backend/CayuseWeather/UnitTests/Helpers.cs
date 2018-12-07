@@ -22,8 +22,8 @@ namespace Tests
             return new WeatherInfo
             {
                 CityName = "Portland",
-                ElevationFeet = 180,
-                ElevationMeters = 187,
+                ElevationFeet = 187,
+                ElevationMeters = 57,
                 Latitude = "45.55",
                 Longitude = "-122.56",
                 TemperatureCelsius = "21",
@@ -37,7 +37,7 @@ namespace Tests
         public static string GetExpectedGoodWeatherResultString()
         {
             return "At the location Portland, the temperature is 70," +
-            " the timezone is Pacific Standard Time, and the elevation is 180 Feet";
+            " the timezone is Pacific Standard Time, and the elevation is 187 Feet";
           
         }
         public static string GetExpectedBadWeatherResultString()
