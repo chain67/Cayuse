@@ -16,4 +16,5 @@ bootstrap or material, newer angular, make it look nice, etc..
 zip code validation
 js tests using jasmine
 handle server errors from remote... 404 etc,
+more logging
 
