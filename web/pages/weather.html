@@ -1,16 +1,14 @@
 <h1>Weather</h1>
 
-Enter 5 digit zipcode and hit enter:
+
 <div ng-controller="WeatherController">
-  <form ng-submit="add()">
+  Enter 5 digit zipcode and hit enter:
+<form ng-submit="submit()">
     <input type="text" name="zipCode" ng-model="zipCode" />
     <input type="submit" value="Submit" />
-  </form>
-</div>
-<form>
-First Name: <input type="text" ng-model="zipCode">
 </form>
+    <h3>{{weather}}</h3>
+</div>
 
 
 
-<h3>{{weather}}</h3>

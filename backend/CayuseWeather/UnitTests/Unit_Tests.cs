@@ -1,10 +1,8 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using BusinessLogic;
-using System.Net;
 using Moq;
 using Data;
-using Newtonsoft.Json.Linq;
+
 
 namespace Tests
 {
@@ -14,15 +12,6 @@ namespace Tests
     public class UnitTest
     {
 
-
-
-        [OneTimeSetUp]
-        public void TestSetup()
-        {
-
-
-
-        }
 
         [Test]
         public void WeatherGetWeatherInfoFromZipCode_ReturnCorrectString_WhenValidZipCode()

@@ -1,7 +1,19 @@
-The backend project should run fine from visual studio and meet the basic requirements. 
+The backend project should run fine from visual studio and meet the basic requirements.
+ the web meets the basic stretch requirements:
+npm install -g http-server
+http-server -o
+click on index.htm
+
+enter a zipcode
 
 I will be working on the things to do.
-as of 10:30 12/7
+as of 3:30 12/8
 to do: 
-int tests with external webservice spinup
-stretch goal(angularjs spa) beyond quick mockup to test connection
+unit test external services
+int test with faked remote webservices
+finish stretch goal(angularjs spa) beyond quick page to test connection and zip functionality
+bootstrap or material, newer angular, make it look nice, etc..
+zip code validation
+js tests using jasmine
+handle server errors from remote... 404 etc,
+

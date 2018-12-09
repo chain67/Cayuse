@@ -26,6 +26,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{13417A39
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{621C18DF-6159-4C09-8AB6-D8E8DCAB31AB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntTests", "IntTests", "{B2BAA76D-5F06-43A2-9EF7-49E9A0D371FA}"
+	ProjectSection(SolutionItems) = preProject
+		UnitTests\Int_Tests.cs = UnitTests\Int_Tests.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +64,7 @@ Global
 		{7218998D-D96A-4130-BAFB-01B292BCF9EB} = {04C23E66-91DD-4D88-BD1F-316A45C818A6}
 		{E5F370E7-1D46-4ADD-B201-9505639BA36F} = {0D62D5D2-04E3-4F19-A730-9F0C5FEB1F47}
 		{621C18DF-6159-4C09-8AB6-D8E8DCAB31AB} = {1B26357A-B621-4333-83CA-731F16DA91D0}
+		{B2BAA76D-5F06-43A2-9EF7-49E9A0D371FA} = {13417A39-DD48-4FF3-B3A3-15616AB0AB2C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AB9CC0C0-9E94-4307-831B-7E56E7DC3BE1}

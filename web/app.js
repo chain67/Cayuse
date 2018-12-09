@@ -16,20 +16,25 @@ app.config(function($routeProvider) {
   .otherwise({redirectTo: '/'});
 });
 
-app.controller('HomeController', function($scope) {
-  $scope.message = 'Hello from HomeController';
-});
+app.controller('HomeController',  ['$scope', function($scope) {
+  $scope.message = 'Cayuse Weather App Home';
+}]);
 
 
+app.controller('WeatherController',  ['$scope', '$http', function($scope, $http) {
+    
+        $scope.submit = function() {
+          if ($scope.zipCode) {
+            $scope.zipCode = this.zipCode;
+           
 
-app.controller('WeatherController', function($scope, $http) {
-        
         $scope.weather = $http({
         url: 'http://localhost:50507/api/weather/', 
         method: "GET",
         params: {zipCode: $scope.zipCode}
                 }).then(function(response){$scope.weather = response.data;});
          
-        
+           }
+        };
  
-   });
+   }]);
