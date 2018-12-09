@@ -3,11 +3,12 @@ The backend project should run fine from visual studio and meet the basic requir
 npm install -g http-server
 http-server -o
 click on index.htm
+click on weather link
 
 enter a zipcode
 
 I will be working on the things to do.
-as of 3:30 12/8
+as of 1:00 12/9
 to do: 
 unit test external services
 int test with faked remote webservices
@@ -15,6 +16,6 @@ finish stretch goal(angularjs spa) beyond quick page to test connection and zip 
 bootstrap or material, newer angular, make it look nice, etc..
 zip code validation
 js tests using jasmine
-handle server errors from remote... 404 etc,
+handle (do not swallow... maybe log) server errors from remote... 
 more logging
 

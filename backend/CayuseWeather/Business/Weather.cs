@@ -1,4 +1,5 @@
 ﻿using Data;
+using System.Net;
 using System.Text.RegularExpressions;
 
 namespace BusinessLogic
@@ -21,13 +22,30 @@ namespace BusinessLogic
 
             if (match.Success)
             {
+                try {
                 var weatherInfo = _dataLayer.GetWeatherInfoFromZipCode(zipCode);
 
                //“At the location $CITY_NAME, the temperature is $TEMPERATURE, the timezone is $TIMEZONE, and the elevation is $ELEVATION”
               response = string.Format("At the location {0}, the temperature is {1}, the timezone is {2}, and the elevation is {3} Feet"
                                        , weatherInfo.CityName, weatherInfo.TemperatureFahrenheit, weatherInfo.Timezone, weatherInfo.ElevationFeet);
+                }
+                catch (System.Net.WebException swe)
+                {
+                    if (swe.Status == WebExceptionStatus.ProtocolError)
+                    {
+                        HttpWebResponse resp = swe.Response as HttpWebResponse;
+                        if (resp != null && resp.StatusCode == HttpStatusCode.NotFound)
+                        {
+                            response = "Zip Code not found, Please enter a valid 5 digit zip code";
+                        }
+                        else
+                            throw;
+                    }
+                    else
+                        throw;
+                }
             }
-           
+         
                 return response;       
             
         }

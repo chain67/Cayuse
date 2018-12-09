@@ -44,6 +44,10 @@ namespace Tests
         {
             return "Please enter a valid 5 digit zip code";
         }
+        public static string GetExpectedZipCodeNotFoundResultString()
+        {
+            return "Zip Code not found, Please enter a valid 5 digit zip code";
+        }
 
         public static string GetGoodTimeZoneWebClientString()
         {

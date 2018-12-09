@@ -2,6 +2,7 @@
 using BusinessLogic;
 using Moq;
 using Data;
+using System.Net;
 
 
 namespace Tests
@@ -52,6 +53,25 @@ namespace Tests
             var _sut = new Weather(mockData.Object);
             var result = _sut.GetWeatherInfoFromZipCode("foo");
             Assert.AreEqual(result, Helpers.GetExpectedBadWeatherResultString());
+        }
+
+        [Test]
+        public void WeatherGetWeatherInfoFromZipCode_ReturnCorrectString_WhenZipCodeNotFound()
+        {
+            var mockData = new Mock<IDataLayer>();
+            mockData = new Mock<IDataLayer>(MockBehavior.Strict);
+
+            var response = new Mock<HttpWebResponse>();
+            response.Setup(c => c.StatusCode).Returns(HttpStatusCode.NotFound);
+
+            var sne = new System.Net.WebException("",new System.Exception(), WebExceptionStatus.ProtocolError, response.Object) {};
+
+            mockData.Setup(d => d.GetWeatherInfoFromZipCode("97000"))
+                .Throws(sne);
+
+            var _sut = new Weather(mockData.Object);
+            var result = _sut.GetWeatherInfoFromZipCode("97000");
+            Assert.AreEqual(result, Helpers.GetExpectedZipCodeNotFoundResultString());
         }
 
         #endregion
